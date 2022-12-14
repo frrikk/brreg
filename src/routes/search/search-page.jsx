@@ -13,7 +13,7 @@ const SearchPage = (props) => {
         onSearch={onSearch}
       />
       {units &&
-        units.map((unit, i) => <SearchResultCard key={i} data={unit.navn} />)}
+        units.map((unit, i) => <SearchResultCard key={i} data={unit.data} />)}
     </div>
   );
 };
