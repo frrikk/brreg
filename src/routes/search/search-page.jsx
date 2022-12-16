@@ -1,4 +1,5 @@
 import { Label } from "../../components/label";
+import { EmptyState } from "../../components/empty-state.jsx";
 import { Input } from "../../components/input.jsx";
 import { Button } from "../../components/button.jsx";
 import { Card } from "../../components/card";
@@ -9,6 +10,23 @@ import { VerticalSpacer } from "../../components/vertical-spacer";
 const SearchPage = (props) => {
   const { result, searchTerm, onSearchTermChange, onSearch, onKeyUp, loading } =
     props;
+
+  if (searchTerm.length === 0) {
+    return (
+      <div>
+        <Heading type="h1">Enhetsregisteret</Heading>
+        <VerticalSpacer />
+        <SearchInput
+          searhTerm={searchTerm}
+          onSearchTermChange={onSearchTermChange}
+          onSearch={onSearch}
+          onKeyUp={onKeyUp}
+          loading={loading}
+        />
+        <EmptyState>Send inn et søk over for å se enheter</EmptyState>;
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -21,7 +39,7 @@ const SearchPage = (props) => {
         onKeyUp={onKeyUp}
         loading={loading}
       />
-      {result?._embedded?.enheter.map((unit, i) => {
+      {result?._embedded?.enheter.map((unit) => {
         const { navn, organisasjonsnummer } = unit;
         return (
           <Card key={organisasjonsnummer}>
@@ -30,6 +48,7 @@ const SearchPage = (props) => {
           </Card>
         );
       })}
+      {searchTerm.length === 0 && <EmptyState />}
     </div>
   );
 };

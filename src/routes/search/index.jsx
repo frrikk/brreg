@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [result, setResult] = React.useState([]);
+  const [result, setResult] = React.useState(null);
 
-  const { data } = useQuery({
+  const { data, status } = useQuery({
     queryKey: [`?navn=${searchTerm}`],
   });
 
