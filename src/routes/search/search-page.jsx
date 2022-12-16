@@ -1,30 +1,41 @@
 import { Label } from "../../components/label";
 import { Input } from "../../components/input.jsx";
 import { Button } from "../../components/button.jsx";
+import { Card } from "../../components/card";
+import { Text } from "../../components/text.jsx";
+import { Heading } from "../../components/heading.jsx";
+import { VerticalSpacer } from "../../components/vertical-spacer";
 
 const SearchPage = (props) => {
-  const { units, searchTerm, onSearchTermChange, onSearch } = props;
+  const { result, searchTerm, onSearchTermChange, onSearch, onKeyUp, loading } =
+    props;
 
   return (
     <div>
+      <Heading type="h1">Enhetsregisteret</Heading>
+      <VerticalSpacer />
       <SearchInput
         searhTerm={searchTerm}
         onSearchTermChange={onSearchTermChange}
         onSearch={onSearch}
+        onKeyUp={onKeyUp}
+        loading={loading}
       />
-      {units &&
-        units.map((unit, i) => <SearchResultCard key={i} data={unit.data} />)}
+      {result?._embedded?.enheter.map((unit, i) => {
+        const { navn, organisasjonsnummer } = unit;
+        return (
+          <Card key={organisasjonsnummer}>
+            <Text>{navn}</Text>
+            <Text>{organisasjonsnummer}</Text>
+          </Card>
+        );
+      })}
     </div>
   );
 };
 
-const SearchResultCard = (props) => {
-  const { data } = props;
-  return <div>{data}</div>;
-};
-
 const SearchInput = (props) => {
-  const { searchTerm, onSearchTermChange, onSearch } = props;
+  const { searchTerm, onSearchTermChange, onSearch, onKeyUp } = props;
   return (
     <div>
       <Label htmlFor="search" labelText="Søk etter enheter" />
@@ -35,6 +46,7 @@ const SearchInput = (props) => {
           id="search"
           name="search"
           placeholder="Ola Nordmann AS"
+          onKeyUp={onKeyUp}
         />
         <Button text="Søk" onClick={onSearch} />
       </div>
