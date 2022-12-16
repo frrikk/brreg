@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import * as React from "react";
 import moment from "moment";
-import { useEffect } from "react";
 
 const initialState = {
   title: "",
@@ -27,19 +26,14 @@ const Project = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["projects"] }),
   });
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      setTimeout(() => setProjectInfo(initialState), 1000);
-    }
-  }, [mutation.isSuccess]);
+  const handleSubmit = () => {
+    mutation.mutate({ data: projectInfo });
+    setProjectInfo(initialState);
+  };
 
   if (!data) {
     return null;
   }
-
-  const handleSubmit = () => {
-    mutation.mutate({ data: projectInfo });
-  };
 
   return (
     <ProjectPage
